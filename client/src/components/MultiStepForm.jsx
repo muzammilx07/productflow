@@ -14,6 +14,7 @@ export default function MultiStepForm() {
     description: "",
     tags: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,12 +51,15 @@ export default function MultiStepForm() {
       return;
     }
 
+    setIsSubmitting(true);
     try {
       await postProduct(formInputs);
       alert("Submitted successfully");
       navigate("/dashboard");
     } catch (error) {
       alert("Submission failed. Are you logged in?");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -216,15 +220,19 @@ export default function MultiStepForm() {
                   type="button"
                   onClick={handleBack}
                   className="bg-[#232329] text-gray-300 px-8 py-2 rounded-lg shadow hover:bg-[#232329] transition border border-[#27272A]"
+                  disabled={isSubmitting}
                 >
                   &larr; Back
                 </button>
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  className="bg-white text-black px-8 py-2 rounded-lg shadow hover:bg-gray-200 transition"
+                  className={`bg-white text-black px-8 py-2 rounded-lg shadow hover:bg-gray-200 transition ${
+                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={isSubmitting}
                 >
-                  Submit
+                  {isSubmitting ? "Submitting..." : "Submit"}
                 </button>
               </div>
             </div>
