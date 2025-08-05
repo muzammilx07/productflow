@@ -16,7 +16,6 @@ exports.createProduct = async (req, res) => {
       submittedBy,
       createdAt: new Date().toISOString(),
     };
-    console.log("Creating product:", product);
     const docRef = await db.collection("products").add(product);
     const savedProduct = { id: docRef.id, ...product };
 
